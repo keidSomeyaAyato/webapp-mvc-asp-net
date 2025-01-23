@@ -1,0 +1,427 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顧客入力</title>
+    <LINK rel='StyleSheet' type='text/css' href='css/bootstrap.min.css'>
+    <script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/vue.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+    	// 画面初期処理
+    	var isSubmitted = false
+    	var mode = -1;
+		$(document).ready(function(){
+			//$('#txtUserCd').focus();
+			
+	    	// ログアウト
+			$('#btnLogout').on('click', function() {
+	    		$('#confirmModalContent').html('ログアウトします。よろしいですか？');
+	    		mode = 0;
+	    		$('#confirmModal').modal('show');
+			});
+		
+	    	// 確認ボタン押下
+			$('#btnConfirm').on('click', function() {
+				// 入力チェック
+				var customerName = $("#txtCustomerName").val();
+				if(customerName.trim() == ""){
+					$('#errMsgModalContent').html('顧客名を入力してください。');
+		    		$('#errMsgModal').modal('show');
+					return;
+				}
+				// 連打制御
+				if(isSubmitted){
+					return;
+				}
+				//isSubmitted = true; // 実際作業時が必要
+                document.forms[0].submit();
+			});		
+
+	    	// 戻るボタン（変更がある場合、確認）
+			$('#btnBack').on('click', function() {
+	    		$('#confirmModalContent').html('変更を破棄してもよろしいですか？');
+	    		mode = 1;
+	    		$('#confirmModal').modal('show');
+			});
+		
+	    	// 確認ボタン押下
+			$('#confirmModalSubmitBtn').on('click', function() {
+				// 連打制御
+				if(isSubmitted){
+					return;
+				}
+				//isSubmitted = true; // 実際作業時が必要
+				if(mode == 0){
+					// ログアウト
+					window.location.href = 'Login.html';
+				    return;
+				} else if(mode == 1){
+					// 戻る
+					document.forms[0].action = "CustomerList.html";
+	                document.forms[0].submit();
+				   return;
+				}
+				$('#confirmModal').modal('hide');
+			});		
+            
+            // モーダル画面閉じるボタン押下
+            $('#errMsgModalCloseBtn').on('click', function(){
+                $('#errMsgModal').modal('hide');
+            });
+
+            $('#confirmModalCloseBtn').on('click', function(){
+                $('#confirmModal').modal('hide');
+            });
+		});
+    </script>
+</head>
+<body>
+    <div class="container body-content" id="idContent">
+        <form action="CustomerConfirm.html" id="form">
+	        <div class="form-group row pt-3">
+	        	<div class="col-4"><h4>顧客管理システム：顧客入力</h4></div>
+	        	<div class="offset-4 col-4 text-end">ログイン名称XXXXXXXX <button type='button' name='btnLogout' id='btnLogout' class='btn btn-secondary'>ログアウト</button></div>
+	        </div>
+	        <hr>
+	        
+	        <div class="form-group row">
+	            <div class="col-1">顧客ID</div>
+	            <div class="col-2"><input type="text" class="form-control" id="txtCustomerId" name="txtCustomerId" maxlength="10" disabled></div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">顧客名<span class="badge bg-danger">※</span></div>
+	            <div class="col-4"><input type="text" class="form-control" id="txtCustomerName" name="txtCustomerName" maxlength="20" value="テスト顧客名"></div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">顧客種別</div>
+				<div class="col-1">
+                    <input class="form-check-input" type="radio" name="rdoCustomerType" id="rdoCustomerType0" value="0" checked>
+                    <label class="form-check-label" for="rdoCustomerType0">指定なし</label>
+                </div>
+				<div class="col-1">
+                    <input class="form-check-input" type="radio" name="rdoCustomerType" id="rdoCustomerType1" value="1">
+                    <label class="form-check-label" for="rdoCustomerType1">一般客</label>
+                </div>
+				<div class="col-1">
+                    <input class="form-check-input" type="radio" name="rdoCustomerType" id="rdoCustomerType2" value="2">
+                    <label class="form-check-label" for="rdoCustomerType2">常連客</label>
+                </div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">電話番号</div>
+				<div class="col-6 d-flex">
+					<div class="col-2"><input class="form-control" name="txtTel1" id="txtTel1" maxlength="5"></div>
+					<div class="col-2 px-1"><input class="form-control" name="txtTel2" id="txtTel2" maxlength="4"></div>
+					<div class="col-2"><input class="form-control" name="txtTel3" id="txtTel3" maxlength="4"></div>
+				</div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">郵便番号</div>
+				<div class="col-6 d-flex">
+					<div class="col-1"><input class="form-control" name="txtZipcode1" id="txtZipcode1" maxlength="3"></div>
+					<div class="col-2 px-1"><input class="form-control" name="txtZipcode2" id="txtZipcode2" maxlength="4"></div>
+				</div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">住所</div>
+	            <div class="col-2">
+					<select class="form-control" id="cmbAreaCode">
+						<option selected>未選択</option>
+						<option v-for="areaCode in areaCodeList"value="{{ areaCode.cd }}">{{ areaCode.name }}</option>
+					</select>
+				</div>
+				<div class="col-5">
+					<input class="form-control" name="txtAddr1" id="txtAddr1" maxlength="40">
+				</div>
+	            <div class="w-100 pt-1"></div>
+				<div class="offset-1 col-7">
+					<input class="form-control" name="txtAddr2" id="txtAddr2" maxlength="40">
+				</div>
+	            <div class="w-100 pt-3"></div>
+	        </div>
+
+			<div class="form-group row" >
+				<div class="col-2 "><u><strong>緊急連絡先</strong></u></div>
+				<div class="offset-7 col-1"><button type="button" class='btn btn-secondary btn-sm' @click="addContactor()">追加</button></div>
+				<div class="w-100 pt-1"></div>
+				<div class="col-10">
+					<table class="table table-striped">
+						<thead class="thead">
+							<tr>
+								<th class="col-1 text-center">No</th>
+								<th class="col-1">連絡先名</th>
+								<th class="col-2">電話番号</th>
+								<th class="col-4">住所</th>
+								<th class="col-1"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="contactor in contactors">
+								<td class="col-1 text-center">{{ contactor.id }}</td>
+								<td class="col-1"><a href="#" @click="editContactor(contactor)">{{ contactor.name }}</a></td>
+								<td class="col-2">{{ contactor.tel1 }}-{{ contactor.tel2 }}-{{ contactor.tel3 }}</td>
+								<td class="col-6">{{ getContactAddress(contactor) }}</td>
+								<td class="col-1"><button type="button" class='btn btn-secondary btn-sm' @click="delContactor(contactor)">削除</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+ 
+				<!-- 緊急連絡先編集モーダル -->
+				<div class="modal fade" id="contactorModal" tabindex="-1">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="contactorModalTitle">緊急連絡先編集</h5>
+							</div>
+							<div class="modal-body">
+								<div class="form-group row">
+									<div class="col-2 text-end">No</div>
+									<div class="col-1"><input type="text" class="form-control" id="txtContactId" name="txtContactId" disabled></div>
+									<div class="w-100 pt-1"></div>
+									<div class="col-2 text-end">連絡先名<span class="badge bg-danger">※</span></div>
+									<div class="col-4"><input type="text" class="form-control" id="txtContactName" name="txtContactName" maxlength="20"></div>
+									<div class="w-100 pt-1"></div>
+									<div class="col-2 text-end">電話番号</div>
+									<div class="col-8 d-flex">
+										<div class="col-2"><input class="form-control" name="txtContactTel1" id="txtContactTel1" maxlength="5"></div>
+										<div class="col-2 px-1"><input class="form-control" name="txtContactTel2" id="txtContactTel2" maxlength="4"></div>
+										<div class="col-2"><input class="form-control" name="txtContactTel3" id="txtContactTel3" maxlength="4"></div>
+									</div>
+									<div class="w-100 pt-1"></div>
+						            <div class="col-2 text-end">郵便番号</div>
+									<div class="col-8 d-flex">
+										<div class="col-2"><input class="form-control" name="txtContactZipcode1" id="txtContactZipcode1" maxlength="3"></div>
+										<div class="col-2 px-1"><input class="form-control" name="txtContactZipcode2" id="txtContactZipcode2" maxlength="4"></div>
+									</div>
+						            <div class="w-100 pt-1"></div>
+									<div class="col-2 text-end">住所</div>
+						            <div class="col-2">
+										<select class="form-control" id="cmbContanctAreaCode" name="cmbContanctAreaCode">
+											<option value="">未選択</option>
+											<option v-for="areaCode in areaCodeList"value="{{ areaCode.cd }}">{{ areaCode.name }}</option>
+										</select>
+									</div>
+									<div class="col-7"><input type="text" class="form-control" id="txtContactAddr1" name="txtContactAddr1" maxlength="40"></div>
+									<div class="w-100 pt-1"></div>
+									<div class="offset-2 col-9"><input type="text" class="form-control" id="txtContactAddr2" name="txtContactAddr2" maxlength="40"></div>
+									<div class="w-100 pt-1"></div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<div class="offset-4 col-8 text-end">
+								<button type="button" class="btn btn-primary btn-sm1 col-2" id="contactorModalSubmitBtn" @click="saveResult()">反映</button>
+								<button type="button" class="btn btn-secondary btn-sm1 col-2" id="contactorModalCloseBtn" @click="closeEditor()">閉じる</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		
+	        <div class="form-group row">
+	        	<div class="col-8">&nbsp;</div>
+	        	<div class="col-2">
+	            	<button type="button" class="btn btn-primary col-10" id="btnConfirm">確認</button>
+	        	</div>
+	        	<div class="col-2">
+	            	<button type="button" class="btn btn-secondary col-10" id="btnBack">戻る</button>
+	        	</div>
+	        </div>
+	        
+            <!-- エラーメッセージモーダル-->
+            <div class="modal" id="errMsgModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errMsgModalTitle">エラー</h5>
+                        </div>
+                        <div class="modal-body alert alert-danger"  role="alert">
+                            <label id="errMsgModalContent">エラーメッセージ</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="errMsgModalCloseBtn">閉じる</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- 確認モーダル -->
+            <div class="modal fade" id="confirmModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalTitle">確認</h5>
+                        </div>
+                        <div class="modal-body">
+                            <label id="confirmModalContent">確認メッセージ？</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default col-2" id="confirmModalCloseBtn">いいえ</button>
+                            <button type="button" class="btn btn-primary col-2" id="confirmModalSubmitBtn">はい</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</form>
+    </div>
+</body>
+<script>
+new Vue({
+            el: '#idContent',
+            data: {
+                areaCodeList: [
+                    { cd: '3100', name: '北海道'},
+                    { cd: '3200', name: '青森県'},
+                    { cd: '3300', name: '岩手県'},
+                    { cd: '3400', name: '宮城県'},
+                    { cd: '3500', name: '秋田県'},
+                    { cd: '3600', name: '山形県'},
+                    { cd: '3700', name: '福島県'},
+                    { cd: '3800', name: '茨城県'},
+                    { cd: '3900', name: '栃木県'},
+                    { cd: '4000', name: '群馬県'},
+                    { cd: '4100', name: '埼玉県'},
+                    { cd: '4200', name: '千葉県'},
+                    { cd: '4300', name: '東京都'},
+                    { cd: '4400', name: '神奈川県'},
+                    { cd: '4500', name: '新潟県'},
+                    { cd: '4600', name: '富山県'},
+                    { cd: '4700', name: '石川県'},
+                    { cd: '4800', name: '福井県'},
+                    { cd: '4900', name: '山梨県'},
+                    { cd: '5000', name: '長野県'},
+                    { cd: '5100', name: '岐阜県'},
+                    { cd: '5200', name: '静岡県'},
+                    { cd: '5300', name: '愛知県'},
+                    { cd: '5400', name: '三重県'},
+                    { cd: '5500', name: '滋賀県'},
+                    { cd: '5600', name: '京都府'},
+                    { cd: '5700', name: '大阪府'},
+                    { cd: '5800', name: '兵庫県'},
+                    { cd: '5900', name: '奈良県'},
+                    { cd: '6000', name: '和歌山県'},
+                    { cd: '6100', name: '鳥取県'},
+                    { cd: '6200', name: '島根県'},
+                    { cd: '6300', name: '岡山県'},
+                    { cd: '6400', name: '広島県'},
+                    { cd: '6500', name: '山口県'},
+                    { cd: '6600', name: '徳島県'},
+                    { cd: '6700', name: '香川県'},
+                    { cd: '6800', name: '愛媛県'},
+                    { cd: '6900', name: '高知県'},
+                    { cd: '7000', name: '福岡県'},
+                    { cd: '7100', name: '佐賀県'},
+                    { cd: '7200', name: '長崎県'},
+                    { cd: '7300', name: '熊本県'},
+                    { cd: '7400', name: '大分県'},
+                    { cd: '7500', name: '宮崎県'},
+                    { cd: '7600', name: '鹿児島県'},
+                    { cd: '7700', name: '沖縄県'}
+                ],
+                contactors: [
+                    { id: 1, name: '田中太郎', tel1: '090',tel2: '1234',tel3: '5678', zipcode1: '110', zipcode2:'0005', areacode: '4300', address1: '台東区上野３－１７－４' ,address2: '尾上貿易上野ビル5階' },
+                    { id: 2, name: '田中太郎', tel1: '090',tel2: '1234',tel3: '5679', zipcode1: '110', zipcode2:'0006', areacode: '4300', address1: '台東区上野３－１７－４' ,address2: '尾上貿易上野ビル6階' }
+                ]
+            },
+			methods :{
+				getContactAddress:function(contactor){
+					var addr = "〒" + contactor.zipcode1 + "-" + contactor.zipcode2;
+					
+					if(contactor.areacode != ""){
+						const index = this.areaCodeList.findIndex((v) => v.cd == contactor.areacode);
+						
+						if(index >= 0){
+							const obj = this.areaCodeList[index];
+							addr = addr + " " + obj.name;
+						}
+					}
+					addr = addr + contactor.address1 + contactor.address2;
+					
+					return addr;
+				},
+				editContactor:function(contactor){
+					$("#txtContactId").val(contactor.id);
+					$("#txtContactName").val(contactor.name);
+					$("#txtContactTel1").val(contactor.tel1);
+					$("#txtContactTel2").val(contactor.tel2);
+					$("#txtContactTel3").val(contactor.tel3);
+					$("#txtContactZipcode1").val(contactor.zipcode1);
+					$("#txtContactZipcode2").val(contactor.zipcode2);
+					$("#cmbContanctAreaCode").val(contactor.areacode);
+					$("#txtContactAddr1").val(contactor.address1);
+					$("#txtContactAddr2").val(contactor.address2);
+					$("#contactorModal").modal("show");
+				},
+				addContactor:function(){
+					$("#txtContactId").val('');
+					$("#txtContactName").val('');
+					$("#txtContactTel1").val('');
+					$("#txtContactTel2").val('');
+					$("#txtContactTel3").val('');
+					$("#txtContactZipcode1").val('');
+					$("#txtContactZipcode2").val('');
+					$("#cmbContanctAreaCode").val('');
+					$("#txtContactAddr1").val('');
+					$("#txtContactAddr2").val('');
+					$("#contactorModal").modal("show");
+				},
+				saveResult:function(){
+					// 入力チェック
+					var id = $("#txtContactId").val();
+					var name = $("#txtContactName").val();
+					var tel1 = $("#txtContactTel1").val();
+					var tel2 = $("#txtContactTel2").val();
+					var tel3 = $("#txtContactTel3").val();
+					var zipcode1 = $("#txtContactZipcode1").val();
+					var zipcode2 = $("#txtContactZipcode2").val();
+					var areacode = $("#cmbContanctAreaCode").val();
+					var address1 = $("#txtContactAddr1").val();
+					var address2 = $("#txtContactAddr2").val();
+					if(name.trim() == ""){
+						alert("連絡先名を入力してください。")
+						return;
+					}
+
+					const value = { id: 999, name: name, tel1: tel1, tel2: tel2, tel3: tel3, zipcode1: zipcode1, zipcode2: zipcode2, areacode: areacode, address1: address1, address2: address2 };
+					if(id == ""){
+						// 追加
+						this.contactors.push(value);
+					} else {
+						// 更新
+						const index = this.contactors.findIndex((v) => v.id == id);
+						if(index >= 0){
+							this.contactors.splice(index, 1, value);
+						} else {
+							this.contactors.push(value);
+						}
+					}
+
+					// idを再修正する
+					var iTmp = 1;
+					this.contactors.forEach(function(item){
+						item.id = iTmp;
+						iTmp++;
+					});
+
+					$("#contactorModal").modal("hide");
+				},
+				closeEditor:function(){
+					$("#contactorModal").modal("hide");
+				},
+				delContactor:function(contactor){
+					if(confirm("緊急連絡先を削除します。よろしいですか")){
+						const index = this.contactors.findIndex((v) => v.id == contactor.id);
+						if(index >=0){
+							this.contactors.splice(index, 1);
+							// idを再修正する
+							var iTmp = 1;
+							this.contactors.forEach(function(item){
+								item.id = iTmp;
+								iTmp++;
+							});
+						}
+					}
+				}
+			}
+        });
+</script>
+</html>
