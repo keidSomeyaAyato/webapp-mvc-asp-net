@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebApp.Models.Login;
+using System.Diagnostics;
 
 namespace WebApp.Controllers
 {
@@ -21,6 +22,8 @@ namespace WebApp.Controllers
         public ActionResult Index(FormLoginModel model)
         {
             //lll
+            Debug.WriteLine(model.LoginID);
+            Debug.WriteLine(model.Password);
             return View();
         }
     }
