@@ -21,7 +21,18 @@ namespace WebApp.Controllers
         [HttpPost]
         public ActionResult Index(FormLoginModel model)
         {
-            return View();
+            if(ModelState.IsValid)
+            {
+                //異常なし
+                return View(model);
+            }
+            else
+            {
+                //異常あり
+                return View(model);
+            }
+
+            
         }
     }
 }

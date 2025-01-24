@@ -22,20 +22,8 @@
 
             // ログインボタン押下
             $('#btnLogin').on('click', function () {
-                // 入力チェック
-                if ($('#txtLoginId').val().trim() == '') {
-                    $('#errMsgModalContent').html('ログインIDを入力してください。');
-                    mode = 1;
-                    $('#errMsgModal').modal('show');
-                    return;
-                }
-                if ($('#txtPassword').val().trim() == '') {
-                    $('#errMsgModalContent').html('パスワードを入力してください。');
-                    $('#errMsgModal').modal('show');
-                    mode = 2;
-                    $('#txtPassword').focus();
-                    return;
-                }
+                //$('#errMsgModalContent').html('ログインIDを入力してください。');
+                //$('#errMsgModalContent').html('パスワードを入力してください。');
 
                 // 連打制御
                 if (isSubmitted) {
@@ -71,7 +59,7 @@
 </head>
 <body>
     <div class="container body-content">
-        @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+        @using (Html.BeginForm("Index", "TEKITOO", FormMethod.Post))
         {
             <form action="Index" id="form" method="post">
                 <div class="d-flex justify-content-center align-items-center" style="height:60vh;">
@@ -83,7 +71,7 @@
                         <div class="form-group row py-2">
                             <div class="offset-3 col-2 text-end">ログインID</div>
                             <div class="col-4">
-                                @Html.TextBoxFor(m => m.LoginID, new { @class = "form-control", maxlength = "20", id = "txtLoginId" })
+                                @Html.TextBoxFor(m => m.LoginID, new { @class = "form-control", id = "txtLoginId" })
                                 @Html.ValidationMessageFor(m => m.LoginID, "", new { @class = "text-danger" })
                             </div>
                         </div>
@@ -91,7 +79,7 @@
                         <div class="form-group row py-2">
                             <div class="offset-3 col-2 text-end">パスワード</div>
                             <div class="col-4">
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", maxlength = "20", id = "txtPassword" })
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", id = "txtPassword" })
                                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                             </div>
                         </div>
