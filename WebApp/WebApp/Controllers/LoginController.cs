@@ -21,9 +21,6 @@ namespace WebApp.Controllers
         [HttpPost]
         public ActionResult Index(FormLoginModel model)
         {
-            //lll
-            Debug.WriteLine(model.LoginID);
-            Debug.WriteLine(model.Password);
             return View();
         }
     }
