@@ -12,24 +12,16 @@ namespace WebApp.Models
     public class MST_USER
     {
         [Key]
-        public int Id { get; set; }
-
-        [Column("USER_CD")]
         public string USER_CD { get; set; }
 
-        [Column("USER_NM")]
         public string USER_NM { get; set; }
 
-        [Column("PASSWORD")]
         public string PASSWORD { get; set; }
 
-        [Column("LAST_LOGIN_TIME")]
         public DateTime? LAST_LOGIN_TIME { get; set; }
 
-        [Column("LAST_LOGOUT_TIME")]
         public DateTime? LAST_LOGOUT_TIME { get; set; }
 
-        [Column("USER_IP_ADDR")]
         public string USER_IP_ADDR { get; set; }
     }
 
