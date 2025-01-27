@@ -14,35 +14,61 @@ namespace WebApp.Services
             _dbContext = new MST_USERDBContext();
         }
 
-        public bool Login(string loginUserID, string loginPassword, string userIPAddress)
+        public bool UserCheck(string LoginUserID)
         {
             try
             {
                 // ユーザーが存在するかを確認
-                var user = _dbContext.USER.FirstOrDefault(u => u.USER_CD == loginUserID.Trim() && u.PASSWORD == loginPassword.Trim());
+                var user = _dbContext.USER.FirstOrDefault(u => u.USER_CD == LoginUserID.Trim());
 
                 if (user != null)
                 {
-                    // LAST_LOGIN_TIMEとUSER_IP_ADDRを更新
-                    user.LAST_LOGIN_TIME = DateTime.Now;
-                    user.USER_IP_ADDR = userIPAddress;
-
-                    // データベースに変更を保存
-                    _dbContext.SaveChanges();
-
                     return true; // ログイン成功
                 }
 
-                return false; // ユーザーが見つからない、またはパスワードが不一致
+                return false; // ユーザーが見つからない
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Debug.WriteLine($"Error: {ex.Message}");
-                if (ex.InnerException != null)
-                {
-                    Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
-                }
                 return false;
+            }
+        }
+
+        public bool PasswordCheck(string LoginUserID,string LoginPassword)
+        {
+            try
+            {
+                var user = _dbContext.USER.FirstOrDefault(u => u.USER_CD == LoginUserID.Trim() && u.PASSWORD == LoginPassword.Trim());
+
+                if (user != null)
+                {
+                    return true; //パスワード一致
+                }
+
+                return false; //パスワード不一致
+
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
+
+        public void UpdateLastLoginTimeAndIp(string loginUserId, string ipAddress)
+        {
+            // ユーザーを取得
+            var user = _dbContext.USER.FirstOrDefault(u => u.USER_CD == loginUserId.Trim());
+
+            if (user != null)
+            {
+                // LAST_LOGIN_TIMEを現在時刻に更新
+                user.LAST_LOGIN_TIME = DateTime.Now;
+
+                // USER_IP_ADDRを引数で受け取ったIPアドレスに更新
+                user.USER_IP_ADDR = ipAddress;
+
+                // データベースを保存
+                _dbContext.SaveChanges();
             }
         }
 

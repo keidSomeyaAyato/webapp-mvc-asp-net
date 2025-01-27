@@ -15,5 +15,7 @@ namespace WebApp.Models.Login
         [Required(ErrorMessage = "パスワードはを入力してください")]
         [StringLength(20, ErrorMessage = "パスワードは20字以内で入力してください")]
         public string Password { get; set; }
+
+        public string IpAddress {  get; set; }
     }
 }

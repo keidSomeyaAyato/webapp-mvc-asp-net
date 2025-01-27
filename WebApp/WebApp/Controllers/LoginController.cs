@@ -20,6 +20,9 @@ namespace WebApp.Controllers
         [HttpGet]
         public ActionResult Index()
         {
+            string userIp = Request.UserHostAddress; // ユーザーのIPアドレスを取得
+            ViewBag.UserIP = userIp; // ビューにIPを渡す
+
             return View();
         }
 
@@ -32,32 +35,37 @@ namespace WebApp.Controllers
                 //formから入力内容を取得
                 string LoginID = model.LoginID; //USER_CD
                 string LoginPassword = model.Password;
-                string userIPAddress = "127.0.0.1";
+                string UserIPAddress = model.IpAddress;
 
                 //DB確認
                 //_userService.MST_USERCheck();
 
                 // ログイン処理
-                bool isLoginSuccessful = _userService.Login(LoginID, LoginPassword, userIPAddress);
+                bool isUserCheck = _userService.UserCheck(LoginID);
 
-                if (isLoginSuccessful)
+                if (isUserCheck)
                 {
-                    // ログイン成功時の処理（例: ホームページへリダイレクト）
-                    return RedirectToAction("Home", "Dashboard");
+                    bool isPassword = _userService.PasswordCheck(LoginID, LoginPassword);
+
+                    if (isPassword)
+                    {
+                        _userService.UpdateLastLoginTimeAndIp(LoginID, UserIPAddress);
+
+                        //ユーザCDをセッションに保存
+                        Session["USER_CD"] = LoginID;
+
+                        // ログイン成功時の処理（例:顧客一覧）
+                        return RedirectToAction("Index", "CustomerList");
+                    }
                 }
-                else
-                {
-                    // ログイン失敗時の処理
-                    return View(model);
-                }
+
+                return View(new { errorMessage = "ログインIDまたはパスワードが間違っています。" });
             }
             else
             {
                 //異常あり
                 return View(model);
             }
-
-            
         }
     }
 }
