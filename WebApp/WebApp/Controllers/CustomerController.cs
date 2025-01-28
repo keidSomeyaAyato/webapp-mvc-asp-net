@@ -12,9 +12,16 @@ namespace WebApp.Controllers
         // GET: Customer
         public ActionResult List()
         {
+            // ※２．ログイン済みのチェック
+            if (Session["USER_CD"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             if (TempData["From"] != null)
             {
                 string from = TempData["From"].ToString();
+                TempData["From"] = from; //再度登録してリロードできるように
             }
             else
             {
