@@ -11,6 +11,8 @@ namespace WebApp.Controllers
         // GET: Customer
         public ActionResult List()
         {
+            ViewBag.Title = "タイトルテスト";
+            ViewBag.Name = "名前テスト";
             return View("CustomerList");
         }
     }
