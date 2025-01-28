@@ -9,7 +9,7 @@ namespace WebApp.Controllers
     public class CustomerController : Controller
     {
         // GET: Customer
-        public ActionResult Index()
+        public ActionResult List()
         {
             return View();
         }
