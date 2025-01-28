@@ -54,12 +54,14 @@ namespace WebApp.Controllers
                         //ユーザCDをセッションに保存
                         Session["USER_CD"] = LoginID;
 
-                        // ログイン成功時の処理（例:顧客一覧）
-                        return RedirectToAction("Index", "CustomerList");
+                        // ログイン成功時の処理（顧客一覧）
+                        TempData["From"] = "Login"; //どこから遷移してきたのか情報を渡す
+                        return RedirectToAction("Index", "Customer/List");
                     }
                 }
-
-                return View(new { errorMessage = "ログインIDまたはパスワードが間違っています。" });
+                string ErrorMessage = "ログインIDまたはパスワードが間違っています。";
+                ViewBag.ErrorMessage = ErrorMessage;
+                return View();
             }
             else
             {
