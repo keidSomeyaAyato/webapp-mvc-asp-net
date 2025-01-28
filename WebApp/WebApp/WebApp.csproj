@@ -235,6 +235,7 @@
     <Content Include="Content\js\vue.min.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
+    <None Include="Views\Customer\CustomerList.cshtml" />
     <Content Include="Views\Sample\CustomerConfirm.html" />
     <Content Include="Views\Sample\CustomerInput.html" />
     <Content Include="Views\Sample\CustomerList.html" />
@@ -269,7 +270,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Customer\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

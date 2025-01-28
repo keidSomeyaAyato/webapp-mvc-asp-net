@@ -11,7 +11,7 @@ namespace WebApp.Controllers
         // GET: Customer
         public ActionResult List()
         {
-            return View();
+            return View("CustomerList");
         }
     }
 }
