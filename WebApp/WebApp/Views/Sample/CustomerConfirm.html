@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顧客入力確認</title>
+    <LINK rel='StyleSheet' type='text/css' href='css/bootstrap.min.css'>
+    <script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/vue.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+    	// 画面初期処理
+    	var isSubmitted = false
+    	var mode = -1;
+		$(document).ready(function(){
+			//$('#txtUserCd').focus();
+			
+	    	// ログアウト
+			$('#btnLogout').on('click', function() {
+	    		$('#confirmModalContent').html('ログアウトします。よろしいですか？');
+	    		mode = 0;
+	    		$('#confirmModal').modal('show');
+			});
+		
+	    	// 登録ボタン押下
+			$('#btnRegister').on('click', function() {
+				// 連打制御
+				if(isSubmitted){
+					return;
+				}
+				//isSubmitted = true; // 実際作業時が必要
+
+				$('#infoMsgModalContent').html('顧客を登録しました。');
+				mode = 0;
+		    	$('#infoMsgModal').modal('show');
+			});		
+
+	    	// 戻るボタン（変更がある場合、確認）
+			$('#btnBack').on('click', function() {
+				// 連打制御
+				if(isSubmitted){
+					return;
+				}
+				//isSubmitted = true; // 実際作業時が必要
+				document.forms[0].action = "CustomerInput.html";
+                document.forms[0].submit();
+			});
+		
+	    	// 確認ボタン押下
+			$('#confirmModalSubmitBtn').on('click', function() {
+				// 連打制御
+				if(isSubmitted){
+					return;
+				}
+				//isSubmitted = true; // 実際作業時が必要
+				if(mode == 0){
+					// ログアウト
+					window.location.href = 'Login.html';
+				    return;
+				}
+				$('#confirmModal').modal('hide');
+			});		
+		
+            // モーダル画面閉じるボタン押下
+            $('#infoMsgModalCloseBtn').on('click', function(){
+                $('#infoMsgModal').modal('hide');
+				if(mode == 0){
+               		document.forms[0].submit();
+				}
+            });
+
+            $('#errMsgModalCloseBtn').on('click', function(){
+                $('#errMsgModal').modal('hide');
+            });
+
+            $('#confirmModalCloseBtn').on('click', function(){
+                $('#confirmModal').modal('hide');
+            });
+		});
+    </script>
+</head>
+<body>
+    <div class="container body-content">
+        <form action="CustomerList.html" id="form">
+	        <div class="form-group row pt-3">
+	        	<div class="col-4"><h4>顧客管理システム：顧客入力確認</h4></div>
+	        	<div class="offset-4 col-4 text-end">ログイン名称XXXXXXXX <button type='button' name='btnLogout' id='btnLogout' class='btn btn-secondary'>ログアウト</button></div>
+	        </div>
+	        <hr>
+	        
+	        <div class="form-group row">
+	            <div class="col-1">顧客ID</div>
+	            <div class="col-2"><input type="text" class="form-control" id="txtCustomerId" name="txtCustomerId" maxlength="10" disabled></div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">顧客名<span class="badge bg-danger">※</span></div>
+	            <div class="col-4"><input type="text" class="form-control" id="txtCustomerName" name="txtCustomerName" maxlength="20" disabled value="テスト顧客名"></div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">顧客種別</div>
+				<div class="col-1">
+                    <input class="form-check-input" type="radio" name="rdoCustomerType" id="rdoCustomerType0" value="0" checked disabled>
+                    <label class="form-check-label" for="rdoCustomerType0">指定なし</label>
+                </div>
+				<div class="col-1">
+                    <input class="form-check-input" type="radio" name="rdoCustomerType" id="rdoCustomerType1" value="1" disabled>
+                    <label class="form-check-label" for="rdoCustomerType1">一般客</label>
+                </div>
+				<div class="col-1">
+                    <input class="form-check-input" type="radio" name="rdoCustomerType" id="rdoCustomerType2" value="2" disabled>
+                    <label class="form-check-label" for="rdoCustomerType2">常連客</label>
+                </div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">電話番号</div>
+				<div class="col-6 d-flex">
+					<div class="col-2"><input class="form-control" name="txtTel1" id="txtTel1" maxlength="5" disabled value="090"></div>
+					<div class="col-2 px-1"><input class="form-control" name="txtTel2" id="txtTel2" maxlength="4" disabled value="1234"></div>
+					<div class="col-2"><input class="form-control" name="txtTel3" id="txtTel3" maxlength="4" disabled value="5678"></div>
+				</div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">郵便番号</div>
+				<div class="col-6 d-flex">
+					<div class="col-1"><input class="form-control" name="txtPostNo1" id="txtPostNo1" maxlength="3" disabled value="110"></div>
+					<div class="col-2 px-1"><input class="form-control" name="txtPostNo2" id="txtPostNo2" maxlength="4" disabled value="0005"></div>
+				</div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">住所</div>
+	            <div class="col-2">
+					<select class="form-control" id="cmbAddr1" disabled>
+						<option>選択肢を選んでください</option>
+						<option value="1" selected>東京都</option>
+						<option value="2">千葉県</option>
+						<option value="3">茨城県</option>
+					</select>					
+				</div>
+				<div class="col-5">
+					<input class="form-control" name="txtAddr2" id="txtAddr2" maxlength="40" disabled value="台東区上野３－１７－４">
+				</div>
+	            <div class="w-100 pt-1"></div>
+				<div class="offset-1 col-7">
+					<input class="form-control" name="txtAddr3" id="txtAddr3" maxlength="40" disabled value="尾上貿易上野ビル6階">
+				</div>
+	            <div class="w-100 pt-3"></div>
+	        </div>
+
+			<div class="form-group row"  id="lstContact">
+				<div class="col-2 "><u><strong>緊急連絡先</strong></u></div>
+				<div class="w-100 pt-1"></div>
+				<div class="col-10">
+					<table class="table table-striped">
+						<thead class="thead">
+							<tr>
+								<th class="col-1 text-center">No</th>
+								<th class="col-1">連絡先名</th>
+								<th class="col-2">電話番号</th>
+								<th class="col-4">住所</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="col-1 text-center">1</td>
+								<td class="col-1">田中太郎</td>
+								<td class="col-2">090-1234-5678</td>
+								<td class="col-4">〒110-0005 東京都台東区上野３－１７－４尾上貿易上野ビル5階</td>
+							</tr>
+							<tr>
+								<td class="col-1 text-center">2</td>
+								<td class="col-1">田中太郎</td>
+								<td class="col-2">090-1234-5678</td>
+								<td class="col-4">〒110-0005 東京都台東区上野３－１７－４尾上貿易上野ビル6階</td>
+							</tr>
+							<tr>
+								<td class="col-1 text-center">3</td>
+								<td class="col-1">田中太郎</td>
+								<td class="col-2">090-1234-5678</td>
+								<td class="col-4">〒110-0005 東京都台東区上野３－１７－４尾上貿易上野ビル7階</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		
+	        <div class="form-group row">
+	        	<div class="col-8">&nbsp;</div>
+	        	<div class="col-2">
+	            	<button type="button" class="btn btn-primary col-10" id="btnRegister">登録</button>
+	        	</div>
+	        	<div class="col-2">
+	            	<button type="button" class="btn btn-secondary col-10" id="btnBack">戻る</button>
+	        	</div>
+	        </div>
+	        
+            <!-- 情報モーダル-->
+            <div class="modal" id="infoMsgModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="infoMsgModalTitle">情報</h5>
+                        </div>
+                        <div class="modal-body alert alert-info" role="alert">
+                            <label id="infoMsgModalContent">情報</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="infoMsgModalCloseBtn">閉じる</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+	        
+            <!-- エラーメッセージモーダル-->
+            <div class="modal" id="errMsgModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errMsgModalTitle">エラー</h5>
+                        </div>
+                        <div class="modal-body alert alert-danger"  role="alert">
+                            <label id="errMsgModalContent">エラーメッセージ</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="errMsgModalCloseBtn">閉じる</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- 確認モーダル -->
+            <div class="modal fade" id="confirmModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalTitle">確認</h5>
+                        </div>
+                        <div class="modal-body">
+                            <label id="confirmModalContent">確認メッセージ？</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default col-2" id="confirmModalCloseBtn">いいえ</button>
+                            <button type="button" class="btn btn-primary col-2" id="confirmModalSubmitBtn">はい</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</form>
+    </div>
+</body>
+</html>
