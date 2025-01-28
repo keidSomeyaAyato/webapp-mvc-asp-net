@@ -22,9 +22,20 @@
 
             // ログインボタン押下
             $('#btnLogin').on('click', function () {
-                //$('#errMsgModalContent').html('ログインIDを入力してください。');
-                //$('#errMsgModalContent').html('パスワードを入力してください。');
-
+                // 入力チェック
+                if ($('#txtLoginId').val().trim() == '') {
+                    $('#errMsgModalContent').html('ログインIDを入力してください。');
+                    mode = 1;
+                    $('#errMsgModal').modal('show');
+                    return;
+                }
+                if ($('#txtPassword').val().trim() == '') {
+                    $('#errMsgModalContent').html('パスワードを入力してください。');
+                    $('#errMsgModal').modal('show');
+                    mode = 2;
+                    $('#txtPassword').focus();
+                    return;
+                }
                 // 連打制御
                 if (isSubmitted) {
                     return;
