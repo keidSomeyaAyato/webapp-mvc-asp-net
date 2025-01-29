@@ -15,7 +15,12 @@
     	
 		$(document).ready(function(){
 			$('#txtCondCustomerIdFrom').focus();
-			
+			let checkboxes = document.querySelectorAll(".form-check-input");
+
+			let checkbox = document.querySelector('.form-check-input[value="@ViewBag.CustomerType"]')
+			if (checkbox) {
+				checkbox.checked = true;
+			}
 	    	// ログアウト
 			$('#btnLogout').on('click', function() {
 	    		$('#confirmModalContent').html('ログアウトします。よろしいですか？');
@@ -103,9 +108,9 @@
         <form action="CustomerInput.html" id="myForm" method="post">
 	        <div class="form-group row">
 	            <div class="col-1">顧客ID</div>
-	            <div class="col-2"><input type="text" class="form-control" id="txtCondCustomerIdFrom" name="txtCondCustomerIdFrom" maxlength="10"></div>
+	            <div class="col-2"><input type="text" class="form-control" id="txtCondCustomerIdFrom" name="txtCondCustomerIdFrom" maxlength="10" value="@ViewBag.CondCustomerIdFrom"></div>
 	            <div class="col-1 text-center">～</div>
-	            <div class="col-2"><input type="text" class="form-control" id="txtCondCustomerIdTo" name="txtCondCustomerIdTo" maxlength="10"> </div>
+	            <div class="col-2"><input type="text" class="form-control" id="txtCondCustomerIdTo" name="txtCondCustomerIdTo" maxlength="10" value="@ViewBag.CondCustomerIdTo"> </div>
 	            <div class="w-100 pt-1"></div>
 	            <div class="col-1">顧客種別</div>
 				<div class="col-1">
@@ -122,7 +127,7 @@
         		</div>
 	            <div class="w-100 pt-1"></div>
 	            <div class="col-1">キーワード</div>
-	            <div class="col-5"><input type="text" class="form-control" id="txtCondKeyword" name="txtCondKeyword" maxlength="50" placeholder="顧客名、電話番号、住所など入力（空白で区切りする）"></div>
+	            <div class="col-5"><input type="text" class="form-control" id="txtCondKeyword" name="txtCondKeyword" maxlength="50" placeholder="顧客名、電話番号、住所など入力（空白で区切りする）" value="@ViewBag.KeyWord"></div>
 	            <div class="offset-2 col-2">
 	            	<button type="button" class="btn btn-secondary col-6" id="btnSearch">検索</button>
 	            </div>
