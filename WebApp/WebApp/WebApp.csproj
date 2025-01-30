@@ -235,6 +235,7 @@
     <Content Include="Content\js\vue.min.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Global.asax" />
+    <None Include="Views\Customer\CustomerList.cshtml" />
     <Content Include="Views\Sample\CustomerConfirm.html" />
     <Content Include="Views\Sample\CustomerInput.html" />
     <Content Include="Views\Sample\CustomerList.html" />
@@ -243,6 +244,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

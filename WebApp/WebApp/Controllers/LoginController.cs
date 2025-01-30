@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.EnterpriseServices;
 using Microsoft.Identity.Client;
 using WebApp.Models;
+using System.Web.UI.WebControls;
 
 namespace WebApp.Controllers
 {
@@ -55,7 +56,7 @@ namespace WebApp.Controllers
                         Session["USER_CD"] = LoginID;
 
                         // ログイン成功時の処理（顧客一覧）
-                        TempData["From"] = "Login"; //どこから遷移してきたのか情報を渡す
+                        TempData["From"] = "LOGIN"; //どこから遷移してきたのか情報を渡す
                         return RedirectToAction("Index", "Customer/List");
                     }
                 }

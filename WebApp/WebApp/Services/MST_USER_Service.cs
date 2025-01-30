@@ -93,5 +93,15 @@ namespace WebApp.Services
                 Debug.WriteLine($"Error during MST_USERCheck: {ex.Message}");
             }
         }
+
+        public string GetName(string USER_CD)
+        {
+            // データベースから USER_CD に一致するユーザーを検索
+            var user = _dbContext.USER.FirstOrDefault(u => u.USER_CD == USER_CD.Trim());
+
+            // ユーザーが見つかった場合は USER_NM を返却、それ以外は null
+            return user?.USER_NM;
+        }
+
     }
 }

@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顧客一覧</title>
+    <LINK rel='StyleSheet' type='text/css' href='/Content/css/bootstrap.min.css'>
+    <script src="/Content/js/jquery-3.3.1.min.js"></script>
+    <script src="/Content/js/bootstrap.min.js"></script>
+    <script>
+    	// 画面初期処理
+    	var isSubmitted = false
+    	var mode = -1;
+    	
+		$(document).ready(function(){
+			$('#txtCondCustomerIdFrom').focus();
+			let checkboxes = document.querySelectorAll(".form-check-input");
+
+			let checkbox = document.querySelector('.form-check-input[value="@ViewBag.CustomerType"]')
+			if (checkbox) {
+				checkbox.checked = true;
+			}
+	    	// ログアウト
+			$('#btnLogout').on('click', function() {
+	    		$('#confirmModalContent').html('ログアウトします。よろしいですか？');
+	    		mode = 0;
+	    		$('#confirmModal').modal('show');
+			});
+
+	    	// 検索ボタン
+			$('#btnSearch').on('click', function() {
+				// デモソース Start
+				alert("検索を行います。");
+				// デモソース End
+			});
+		
+	    	// 削除ボタン押下
+			$('#btnDelete').on('click', function() {
+				// 選択ありのチェック
+		    	var isChecked = false;
+		    	$('.clsChoice').each( function( index, element ){
+			   		if($(element).prop('checked')){
+			   			isChecked = true;
+			   	    	return;
+			   		}
+		    	});
+
+		    	if(isChecked){
+		    		$('#confirmModalContent').html('選択された顧客を削除します。よろしいですか？');
+					mode = 1;
+		    		$('#confirmModal').modal('show');
+		    	} else {
+		    		$('#errMsgModalContent').html('選択された対象データがありません。');
+		    		$('#errMsgModal').modal('show');
+		    	}
+			});		
+			
+	    	// 新規登録ボタン押下
+			$('#btnRegister').on('click', function() {
+				// 連打制御
+				if(isSubmitted){
+					return;
+				}
+				isSubmitted = true;
+				document.forms[0].submit();
+			});		
+			
+	    	// 確認画面はいボタン押下
+			$('#confirmModalSubmitBtn').on('click', function() {
+				// 連打制御
+				if(isSubmitted){
+					return;
+				}
+				
+				if(mode == 0){
+		           window.location.href = 'Login.html';
+				   return;
+				} else if(mode == 1){
+					// デモソース Start
+					alert("削除を行いました。");
+					$('.clsChoice').each( function( index, element ){
+						$(element).prop('checked', false);
+					});
+					// デモソース End
+					return;
+				}
+				
+				$('#confirmModal').modal('hide');
+				
+				//isSubmitted = true; // 実際作業時が必要
+			});				
+            
+            // モーダル画面閉じるボタン押下
+            $('#errMsgModalCloseBtn').on('click', function(){
+                $('#errMsgModal').modal('hide');
+            });
+
+            $('#confirmModalCloseBtn').on('click', function(){
+                $('#confirmModal').modal('hide');
+            });
+		});
+		
+    </script>
+</head>
+<body>
+    <div class="container body-content">
+        <form action="CustomerInput.html" id="myForm" method="post">
+	        <div class="form-group row">
+	            <div class="col-1">顧客ID</div>
+	            <div class="col-2"><input type="text" class="form-control" id="txtCondCustomerIdFrom" name="txtCondCustomerIdFrom" maxlength="10" value="@ViewBag.CondCustomerIdFrom"></div>
+	            <div class="col-1 text-center">～</div>
+	            <div class="col-2"><input type="text" class="form-control" id="txtCondCustomerIdTo" name="txtCondCustomerIdTo" maxlength="10" value="@ViewBag.CondCustomerIdTo"> </div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">顧客種別</div>
+				<div class="col-1">
+		            <input class="form-check-input" type="checkbox" value="0" id="chkCustomerType0">
+		            <label class="form-check-label" for="chkCustomerType0">指定なし</label>
+        		</div>
+				<div class="col-1">
+		            <input class="form-check-input" type="checkbox" value="1" id="chkCustomerType1">
+		            <label class="form-check-label" for="chkCustomerType1">一般客</label>
+        		</div>
+				<div class="col-1">
+		            <input class="form-check-input" type="checkbox" value="2" id="chkCustomerType2">
+		            <label class="form-check-label" for="chkCustomerType2">常連客</label>
+        		</div>
+	            <div class="w-100 pt-1"></div>
+	            <div class="col-1">キーワード</div>
+	            <div class="col-5"><input type="text" class="form-control" id="txtCondKeyword" name="txtCondKeyword" maxlength="50" placeholder="顧客名、電話番号、住所など入力（空白で区切りする）" value="@ViewBag.KeyWord"></div>
+	            <div class="offset-2 col-2">
+	            	<button type="button" class="btn btn-secondary col-6" id="btnSearch">検索</button>
+	            </div>
+	            <div class="w-100 pt-3"></div>
+	        </div>
+
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+				  <li class="page-item">
+					<a class="page-link" href="#" aria-label="Previous">
+					  <span aria-hidden="true">&laquo;</span>
+					</a>
+				  </li>
+				  <li class="page-item"><a class="page-link" href="#">1</a></li>
+				  <li class="page-item">・・・</li>
+				  <li class="page-item"><a class="page-link" href="#">7</a></li>
+				  <li class="page-item"><a class="page-link" href="#">8</a></li>
+				  <li class="page-item active"><a class="page-link" href="#">9</a></li>
+				  <li class="page-item"><a class="page-link" href="#">10</a></li>
+				  <li class="page-item"><a class="page-link" href="#">11</a></li>
+				  <li class="page-item">・・・</li>
+				  <li class="page-item"><a class="page-link" href="#">100</a></li>
+				  <li class="page-item">
+					<a class="page-link" href="#" aria-label="Next">
+					  <span aria-hidden="true">&raquo;</span>
+					</a>
+				  </li>
+				</ul>
+			</nav>
+
+	        <div class="form-group row">
+	        	<div class="col-12">
+	        		<table class="table table-striped table-bordered">
+	        			<thead class="thead">
+	        				<tr>
+		        				<th class="col-1 text-center">選択</th>
+		        				<th class="col-1" style="cursor:pointer;">顧客ID▲</th>
+		        				<th class="col-2" style="cursor:pointer;">顧客名△</th>
+		        				<th class="col-1" style="cursor:pointer;">顧客種別△</th>
+		        				<th class="col-2">電話番号</th>
+		        				<th class="col-1">郵便番号</th>
+		        				<th class="col-4">住所</th>
+	        				</tr>
+	        			</thead>
+	        			<tbody>
+	        				<tr>
+		        				<td class="col-1 text-center"><input type="checkbox" name="chkChoice" class="clsChoice form-check-input" value="1"></td>
+		        				<td class="col-1"><a href="CustomerInput.html">00000001</a></td>
+		        				<td class="col-2">ケイ　太郎01</td>
+		        				<td class="col-1">常連客</td>
+		        				<td class="col-2">090-1234-5678</td>
+		        				<td class="col-1">123-3456</td>
+		        				<td class="col-4">東京都台東区上野３－１７－４尾上貿易上野ビル６階</td>
+	        				</tr>
+	        			</tbody>
+	        		</table>
+	        	</div>
+	        </div>
+	        <div class="form-group row">
+	        	<div class="col-8">&nbsp;</div>
+	        	<div class="col-2">
+	            	<button type="button" class="btn btn-warning col-10" id="btnDelete">削除</button>
+	        	</div>
+	        	<div class="col-2">
+	            	<button type="button" class="btn btn-primary col-10" id="btnRegister" >新規登録</button>
+	        	</div>
+	        </div>
+	        
+            <!-- エラーメッセージモーダル-->
+            <div class="modal" id="errMsgModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="errMsgModalTitle">エラー</h5>
+                        </div>
+                        <div class="modal-body alert alert-danger"  role="alert">
+                            <label id="errMsgModalContent">エラーメッセージ</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="errMsgModalCloseBtn">閉じる</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ 
+            <!-- 確認モーダル -->
+            <div class="modal fade" id="confirmModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalTitle">確認</h5>
+                        </div>
+                        <div class="modal-body">
+                            <label id="confirmModalContent">確認メッセージ？</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default col-2" id="confirmModalCloseBtn">いいえ</button>
+                            <button type="button" class="btn btn-primary col-2" id="confirmModalSubmitBtn">はい</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</form>
+    </div>
+</body>
+</html>
