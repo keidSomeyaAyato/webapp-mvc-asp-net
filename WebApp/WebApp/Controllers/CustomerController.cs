@@ -17,11 +17,22 @@ namespace WebApp.Controllers
         public ActionResult List()
         {
             //vb宣言
-            string vbCondCustomerIdFrom = "";
-            string vbCondCustomerIdTo = "";
-            int vbCustomerType = 4;
-            string vbKeyWord = "";
+            string vbCondCustomerIdFrom;
+            string vbCondCustomerIdTo;
+            bool vbCustomerType0;
+            bool vbCustomerType1;
+            bool vbCustomerType2;
+            string vbKeyWord;
             string from;
+
+            //後で削除
+            vbCondCustomerIdFrom = "";
+            vbCondCustomerIdTo = "";
+            vbCustomerType0 = false;
+            vbCustomerType1 = false;
+            vbCustomerType2 = false;
+            vbKeyWord = "";
+            //後で削除
 
             // ※２．ログイン済みのチェック
             if (Session["USER_CD"] == null)
@@ -46,7 +57,9 @@ namespace WebApp.Controllers
                 case "LOGIN":
                     vbCondCustomerIdFrom = "";
                     vbCondCustomerIdTo = "";
-                    vbCustomerType = 4;
+                    vbCustomerType0 = false;
+                    vbCustomerType1 = false;
+                    vbCustomerType2 = false;
                     vbKeyWord = "";
                     break;
                 case "INPUT":
@@ -62,7 +75,9 @@ namespace WebApp.Controllers
             ViewBag.Name = _userService.GetName(Session["USER_CD"].ToString());
             ViewBag.CondCustomerIdFrom = vbCondCustomerIdFrom;
             ViewBag.CondCustomerIdTo = vbCondCustomerIdTo;
-            ViewBag.CustomerType = vbCustomerType;
+            ViewBag.CustomerType0 = vbCustomerType0;
+            ViewBag.CustomerType1 = vbCustomerType1;
+            ViewBag.CustomerType2= vbCustomerType2;
             ViewBag.KeyWord = vbKeyWord;
 
             return View("CustomerList");
