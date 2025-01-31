@@ -254,6 +254,7 @@
     <Compile Include="Models\MST_USER.cs" />
     <Compile Include="Models\Login\FormLoginModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CustomerSearchService.cs" />
     <Compile Include="Services\FormLoginModel_Service.cs" />
     <Compile Include="Services\MST_USER_Service.cs" />
   </ItemGroup>
