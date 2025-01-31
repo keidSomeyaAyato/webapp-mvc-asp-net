@@ -72,6 +72,16 @@ namespace WebApp.Controllers
                 default:
                     break;
             }
+
+            //データ検索前チェック
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+            }
             //Form初期表示
             ViewBag.Title = "顧客一覧";
             ViewBag.Name = _userService.GetName(Session["USER_CD"].ToString());
