@@ -14,6 +14,7 @@ namespace WebApp.Controllers
         private readonly MST_USERService _userService = new MST_USERService();
 
         // GET: Customer
+        [HttpGet]
         public ActionResult List()
         {
             //vb宣言
@@ -82,5 +83,13 @@ namespace WebApp.Controllers
 
             return View("CustomerList");
         }
+
+        // POST: Customer
+        [HttpPost]
+        public ActionResult Search()
+        {
+            return RedirectToAction("Index", "Customer/List");
+        }
+
     }
 }
