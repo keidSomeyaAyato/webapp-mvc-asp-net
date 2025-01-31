@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Razor.Tokenizer.Symbols;
+using WebApp.Models.Customer;
 using WebApp.Services;
 
 namespace WebApp.Controllers
@@ -86,8 +87,29 @@ namespace WebApp.Controllers
 
         // POST: Customer
         [HttpPost]
-        public ActionResult Search()
+        public ActionResult Search(FormCustomerSearchModel form)
         {
+            string from;
+            // ※２．ログイン済みのチェック
+            if (Session["USER_CD"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            //遷移の確認
+            if (TempData["From"] != null)
+            {
+                from = TempData["From"].ToString();
+                TempData["From"] = from; //再度登録してリロードできるように
+            }
+            else
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            //入力チェック
+            //CondCustomerIdFromとCondCustomerIdToが数字がチェック
+
             return RedirectToAction("Index", "Customer/List");
         }
 
