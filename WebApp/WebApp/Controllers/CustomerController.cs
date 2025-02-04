@@ -82,7 +82,7 @@ namespace WebApp.Controllers
             }
             catch (Exception ex)
             {
-
+                Debug.WriteLine(ex);
             }
             //Form初期表示
             ViewBag.Title = "顧客一覧";

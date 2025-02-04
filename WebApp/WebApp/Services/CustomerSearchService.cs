@@ -18,7 +18,16 @@ namespace WebApp.Services
 
         public List<DBCustomerSearchModel> GetCustomerFirstToTen()
         {
-            string sql = "SELECT TOP 10 * FROM MST_CUSTOMER ORDER BY CUST_ID ASC";
+            string sql = @"
+                SELECT TOP 10 
+                    CUST_ID AS ID, 
+                    CUST_NM AS Name, 
+                    CUST_TYPE AS Type, 
+                    TEL_NO AS PhoneNumber, 
+                    ZIPCODE AS ZipCode, 
+                    ADDRESS AS Address
+                FROM MST_CUSTOMER 
+                ORDER BY CUST_ID ASC";
 
             return _dbContext.Database.SqlQuery<DBCustomerSearchModel>(sql).ToList();
         }

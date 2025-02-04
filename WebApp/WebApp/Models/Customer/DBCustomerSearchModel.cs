@@ -10,15 +10,22 @@ namespace WebApp.Models.Customer
     [Table("MST_CUSTOMER")]
     public class DBCustomerSearchModel
     {
-        public int ID { get; set; }
+        [Column("CUST_ID")]
+        public string ID { get; set; }
+
+        [Column("CUST_NM")]
         public string Name { get; set; }
 
+        [Column("CUST_TYPE")]
         public string Type { get; set; }
 
+        [Column("TEL_NO")]
         public string PhoneNumber { get; set; }
 
+        [Column("ZIPCODE")]
         public string ZipCode { get; set; }
 
+        [Column("ADDRESS")]
         public string Address { get; set; }
     }
 
