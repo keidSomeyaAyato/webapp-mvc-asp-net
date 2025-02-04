@@ -186,6 +186,18 @@
                                 <td class="col-1">123-3456</td>
                                 <td class="col-4">東京都台東区上野３－１７－４尾上貿易上野ビル６階</td>
                             </tr>
+                            @foreach ( var customer in ViewBag.SearchResult)
+                            {
+                                <tr>
+                                    <td class="col-1 text-center"><input type="checkbox" name="chkChoice" class="clsChoice form-check-input" value="@customer.Type"></td>
+                                    <td class="col-1"><a href="CustomerInput.html">@customer.ID</a></td>
+                                    <td class="col-2">@customer.Name</td>
+                                    <td class="col-1">@customer.Type</td>
+                                    <td class="col-2">@customer.PhoneNumber</td>
+                                    <td class="col-1">@customer.ZipCode</td>
+                                    <td class="col-4">@customer.Address</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

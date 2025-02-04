@@ -13,6 +13,7 @@ namespace WebApp.Controllers
     public class CustomerController : Controller
     {
         private readonly MST_USERService _userService = new MST_USERService();
+        private readonly CustomerSearchService _customerSearchService = new CustomerSearchService();
 
         // GET: Customer
         [HttpGet]
@@ -73,10 +74,11 @@ namespace WebApp.Controllers
                     break;
             }
 
-            //データ検索前チェック
             try
             {
-
+                //検索
+                List <DBCustomerSearchModel>  SearchResult = _customerSearchService.GetCustomerFirstToTen();
+                ViewBag.SearchResult = SearchResult;
             }
             catch (Exception ex)
             {
